@@ -9,7 +9,9 @@ public class EventuallyPerfectFailureDetector implements IFailureDetector {
 	Timer t;
 	ArrayList<Long> times;
 	
+	static Long delay;
 	static final int Delta = 1000; /* 1sec */
+	static Long Timeout = Delta + 2*delay;
 	
 	class PeriodicTask extends TimerTask {
 		public void run() {
@@ -19,7 +21,15 @@ public class EventuallyPerfectFailureDetector implements IFailureDetector {
 	
 	class PeriodicCheck extends TimerTask {
 		public void run() {
-			//TODO
+			Long currentTime = System.currentTimeMillis();
+			for (int i = 0; i < times.size(); i++) {
+				if (currentTime - times.get(i) > Timeout) {
+					suspects.add(i);
+				}
+				else {
+					suspects.remove((Integer) i);
+				}
+			}
 		}
 	}
 
@@ -36,13 +46,15 @@ public class EventuallyPerfectFailureDetector implements IFailureDetector {
 	@Override
 	public void begin() {
 		t.schedule(new PeriodicTask(), 0, Delta);
-		//TODO PeriodicCheck()
+		t.schedule(new PeriodicCheck(), 0, Timeout);
 	}
 
 	@Override
 	public void receive(Message m) {
 		Utils.out(p.pid, m.toString());
-
+		
+		/* delay upadte */
+		delay = (System.currentTimeMillis() - Long.parseLong(m.getPayload()));
 		/* reset the times */
 		times.set(m.getSource(), System.currentTimeMillis());
 	}
