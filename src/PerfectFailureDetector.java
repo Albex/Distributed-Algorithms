@@ -21,7 +21,7 @@ public class PerfectFailureDetector implements IFailureDetector {
 	class PeriodicCheck extends TimerTask {
 		public void run() {
 			Long currentTime = System.currentTimeMillis();
-			for (int i = 1; i <= times.size(); i++) {
+			for (int i = 0; i < times.size(); i++) {
 				if (currentTime - times.get(i) > Timeout) {
 					suspects.add(i);
 				}
@@ -37,7 +37,7 @@ public class PerfectFailureDetector implements IFailureDetector {
 		t = new Timer();
 		suspects = new ArrayList<Integer>();
 		times = new ArrayList<Long>(n);
-		for (int i = 1; i <= n; i++) {
+		for (int i = 0; i < n; i++) {
 			times.set(i, System.currentTimeMillis());
 		}
 	}
