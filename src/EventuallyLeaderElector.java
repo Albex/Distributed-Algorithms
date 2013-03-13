@@ -1,9 +1,13 @@
+import java.util.ArrayList;
+
 
 public class EventuallyLeaderElector extends EventuallyPerfectFailureDetector {
 
+	ArrayList<Integer> trusts;
+	
 	public EventuallyLeaderElector(Process p, int n) {
 		super(p, n);
-		// TODO Auto-generated constructor stub
+		trusts = new ArrayList<Integer>();
 	}
 
 	@Override
