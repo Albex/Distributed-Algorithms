@@ -53,7 +53,7 @@ public class PerfectFailureDetector implements IFailureDetector {
 		Utils.out(p.pid, m.toString());
 		
 		/* reset the times */
-		times.set(m.getSource(), System.currentTimeMillis());
+		times.set(m.getSource()-1, System.currentTimeMillis());
 	}
 
 	@Override
